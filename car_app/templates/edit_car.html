@@ -1,0 +1,85 @@
+{% extends 'base.html' %}
+{% block content%}
+<div class="container add-car-body mb-4">
+    <h3 class="">Welcome, {{request.session.provider_name}} !</h3>
+    <div class="d-flex">
+        <div class="col">
+            <h5 class="mb-4">Update your car info.</h5>
+            <div class="col-md-10 car_form mr-5">
+                <div class="row car_details search_result">
+                    <form action="/my_dashboard/edit_my_car/{{car.id}}/" method="post" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <label for="brand" class="form-label">Brand</label>
+                                <textarea type="text" class="form-control" name="brand" rows="1" id="brand" required> {{car.brand}}</textarea>
+                            </div>
+                            <div class="col-lg-6">
+                                <label for="model" class="form-label">Model</label>
+                                <textarea name="model" class="form-control" id="model" rows="1" required>{{car.model}}</textarea>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <label for="color" class="form-label">Color</label>
+                                <textarea name="color" class="form-control" id="color"rows="1" required>{{car.color}}</textarea>
+                            </div>
+                            <div class="col-lg-6">
+                                <label for="production_year" class="form-label">Production year</label>
+                                <textarea name="production_year" class="form-control" id="production_year" rows="1" required>{{car.production_year}}</textarea>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <label for="plate_number" class="form-label">Plate Number</label>
+                                <textarea name="plate_number" class="form-control" id="production_year" rows="1" required>{{car.plate_number}}</textarea>
+                            </div>
+                            <div class="col-lg-6">
+                                <label for="price" class="form-label">Price</label>
+                                <textarea name="price" class="form-control" id="price" rows="1" required>{{car.price}}</textarea>
+                            </div>
+                            <div class="col-lg-4 upload-margin">
+                                <label for="photo" class="custom-file-upload btn btn-outline"><i class="bi bi-cloud-arrow-up-fill"></i>Add car photo</label>
+                                <input type="file" class="input-upload form-control form-control-lg" name="photo" id="photo">
+                                <div class="edit-photo">
+                                    <img src="{{car.photo.url}}" class="mb-4 rounded-circle" alt="photo_test" width="60%">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col text-center">
+                            <button class="w-20 btn btn-outline-secondary mt-3" type="submit">Update Car</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4 text-center search_result">
+            <div class="all_cars">
+                <h5>Manage my cars</h5>
+                <table class="table">
+                    <thead class="position">
+                        <tr>
+                            <th scope="col">Car</th>
+                            <th scope="col">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for car in provider.cars.all %}
+                        <tr class="display">
+                            <td scope="row" name="car_id"><span>{{car.brand}}</span></td>
+                            <td>
+                                <input type="hidden" name="car_id" value="{{ car.id }}">
+                                <a href="/my_dashboard/edit_car/{{car.id}}/">Edit</a>
+                                <a href="/my_dashboard/delete_car/{{car.id}}/">Delete</a>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+

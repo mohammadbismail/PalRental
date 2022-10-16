@@ -1,0 +1,123 @@
+{% extends 'base.html' %}
+{% block content%}
+    <div class="container-fluid m-3 p-2">
+        <div class="row my-5">
+            <div class="site-wrap" id="home-section">
+
+            </div>
+        </div>
+        <div class="container-fluid">
+            <div class="row col-11 justify-content-center">
+                <!-- FIXME: Side Bar -->
+                <div class="card filter_side_bar col-lg-3 border border-1 pt-3 mr-3">
+                    <header class="card-header">
+                        <h5 class="title">Filters</h5>
+                    </header>
+                    <article class="card-group-item">
+                        <header class="card-header">
+                            <h6 class="title">Brands</h6>
+                        </header>
+                        {% for car in searched_cars %}
+                        <form>
+                            <label class="form-check">
+                                <input class="form-check-input" type="checkbox" value="{{car.brand}}">
+                                <span class="form-check-label">
+                                    {{car.brand}}
+                                </span>
+                            </label> <!-- form-check.// -->
+                        </form>
+                        {% endfor %}
+                    </article>
+                    <article class="card-group-item">
+                        <header class="card-header">
+                            <h6 class="title">Price Rnage</h6>
+                        </header>
+                        <div class="filter-content">
+                            <div class="card-body">
+                                <div class="form-row">
+                                    <div class="form-group col-md-6">
+                                        <label>Min</label>
+                                        <input type="number" class="form-control" id="inputEmail4" placeholder="$50">
+                                    </div>
+                                    <div class="form-group col-md-6 text-right">
+                                        <label>Max</label>
+                                        <input type="number" class="form-control" placeholder="$500">
+                                    </div>
+                                </div>
+                            </div> <!-- card-body.// -->
+                        </div>
+                    </article> <!-- card-group-item.// -->
+                    <article class="card-group-item">
+                        <header class="card-header">
+                            <h6 class="title">Change dates</h6>
+                        </header>
+                        <div class="filter-content">
+                            <div class="card-body">
+                                <div class="form-row">
+                                    <div class="form-group col-md-6">
+                                        <label>Pick up</label>
+                                        <input type="date" class="form-control" id="inputEmail4">
+                                    </div>
+                                    <div class="form-group col-md-6 text-right">
+                                        <label>Drop off</label>
+                                        <input type="date" class="form-control">
+                                    </div>
+                                </div>
+                            </div> <!-- card-body.// -->
+                        </div>
+                    </article> <!-- card-group-item.// -->
+                </div>
+
+                <div class="search_result col-lg-8 border rounded">
+                    <div class="sorting col-12 justify-content-evenly">
+                        <!-- TODO: jinja for period number -->
+                        <p>You are searching for 10 days period</p>
+                        <div class="sm-10">
+                            <select name="sorting" class="btn btn-primary dropdown-toggle btn-sm " id="" >
+                                <option value="cheapest">cheapest</option>
+                                <option value="best_rating">best rating</option>
+                            </select>
+                        </div>
+
+                        <!-- TODO: jenja for cars numbers -->
+                        <p>you have 20 cars to select</p>
+                    </div>
+                    <div>
+                        {% for provider in searched_cars %}
+                        {% for car in provider.cars.all%}
+                        <div class="container-fluid row border rounded text-black ml-1 m-2 p-2">
+                            <input type="hidden" name="car_id" value="{{car.id}}">
+                            <form action="/car_select/{{car.id}}/" method="post">
+                                {% csrf_token %}
+                                <div class="row justify-content-center">
+                                    <div class="col-lg-3">
+                                        <img src="{{car.photo.url}}" alt="photo_test" class="img-fluid rounded-2">
+                                    </div>
+                                    <div class="col-lg-4">
+                                        <h6>Brand: {{car.brand}}</h6>
+                                        <h6>Model: {{car.model}}</h6>
+                                        <h6>Production year: {{car.production_year}}</h6>
+                                    </div>
+                                    <div class="col-lg-3">
+                                        <h6>Car Provider: {{provider.name}}</h6>
+                                        <h6>Car Location: {{provider.location}}</h6>
+                                        <h6>Price: {{car.price}} $</h6>
+                                    </div>
+                                    <div class="col">
+                                        <button class="btn btn-secondary rounded-pill mt-4 btn-sm text-black" type="submit">Select Car</button>
+                                    </div>
+
+                                </div>
+                            </form>
+                        </div>
+                        {% endfor %}
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+
+{%endblock%}

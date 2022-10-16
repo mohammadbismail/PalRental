@@ -1,0 +1,143 @@
+{% extends 'base.html' %}
+{% block content%}
+<style>
+    #left_side {
+        border: 1px solid black;
+        background-color: rgb(155, 155, 155);
+        /* margin-left: 10px; */
+    }
+    .body {
+        display: flex;
+    }
+    #right_side {
+        margin-right: 10px;
+        background-color: rgb(155, 155, 155);
+    }
+</style>
+<div class="container my-5 p-5">
+    <div class="row my-4 col-11" >
+        <div class="row">
+            <div class="col-6 my-3">
+                <h2 class="text-center">Edit Provider Account</h2>
+            </div>
+            <hr class="border border-2 border-primary">
+        </div>
+        <div class="body">
+            <div class="col-sm-6 border border-2 rounded" id="left_side">
+                <form action="/my_dashboard/provider_account_edit/{{provider_id}}/" class="needs-validation" method="post"
+                    enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <div class="row g-0">
+                        <div class="col-lg-6">
+                            <label for="name" class="form-label ">Company Name</label>
+                            <textarea name="name" class="form-control" id="name" cols="20" rows="1"
+                                required>{{provider.name}}</textarea>
+                        </div>
+                        <div class="col-lg-6">
+                            <label for="location" class="form-label">Location</label>
+                            <select class="selectpicker form-control" aria-label="Default select example" name="location">
+                                <option value="Ramallah">Ramallah</option>
+                                <option value="Nablus">Nablus</option>
+                                <option value="Hebron">Hebron</option>
+                                <option value="Tulkarem">Tulkarem</option>
+                                <option value="Qalqilya">Qalqilya</option>
+                                <option value="Jenin">Jenin</option>
+                                <option value="Salfit">Salfit</option>
+                                <option value="Bethlehem">Bethlehem</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="row g-0">
+                        <div class="col-lg-6">
+                            <label for="email" class="form-label">Email</label>
+                            <textarea name="email" class="form-control" id="email" cols="20" rows="1"
+                                required>{{provider.email}}</textarea>
+                        </div>
+                        <div class="col-lg-6">
+                            <label for="password" class="form-label">Old Password</label>
+                            <input type="password" class="form-control" name="password" id="password" placeholder="" value=""
+                                required>
+                        </div>
+                    </div>
+                    <div class="row g-0">
+                        <div class="col-lg-6">
+                            <label for="new_password" class="form-label">New Password</label>
+                            <input type="password" class="form-control" name="new_password" id="password" placeholder=""
+                                value="" required>
+                        </div>
+                        <div class="col-lg-6">
+                            <label for="confp" class="form-label">Confirm PW</label>
+                            <input type="password" class="form-control" name="confp" id="confp" placeholder="" value=""
+                                required>
+                        </div>
+                    </div>
+                    <div class="row g-0">
+                        <div class="col-lg-6">
+                            <label for="mobile" class="form-label">Mobile</label>
+                            <textarea name="mobile" class="form-control" id="mobile" cols="20" rows="1"
+                                required>{{provider.mobile}}</textarea>
+                        </div>
+                    </div>
+                    <div class="row-10">
+                        <label for="permit" class="form-label">Permit</label>
+                        <img src="{{provider.permit.url}}" alt="photo_test" width="100px" height="100px">
+                        <input type="file" class="form-control" name="permit" id="permit">
+                    </div>
+                    <div class="row-9">
+                        <label for="logo" class="form-label">Company Logo</label>
+                        <img src="{{provider.logo.url}}" alt="photo_test" width="100px" height="100px">
+                        <input type="file" class="form-control" name="logo" id="logo">
+                    </div>
+                    <div class="text-center">
+                        <button class="w-20 btn btn-success btn-lg" type="submit">Update</button>
+                    </div>
+                </form>
+            </div>
+            <div class="col col-8 border border-2 rounded" id="right_side">
+                <div class="col-4 my-2">
+                    <a href="/my_dashboard/provider_payment_method/{{provider_id}}/">
+                        <button type="submit" class="btn btn-primary">Add payment</button>
+                    </a>
+                </div>
+                <div class="col-6 my-2">
+                    <h5>Existing Provider cards</h5>
+                </div>
+                <div>
+                    <table class="table">
+                        <thead class="position">
+                            <tr>
+                                <th scope="col">Card Type</th>
+                                <th scope="col">Card owner</th>
+                                <th scope="col">Card number</th>
+                                <th scope="col">Expiration Date</th>
+                                <th scope="col">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for card in cards %}
+                            <tr class="display">
+                                <td scope="row" name="card_id"><span>{{card.card_type}}</span></td>
+                                <td scope="row" name="card_id"><span>{{card.card_owner}}</span></td>
+                                <td scope="row" name="card_id"><span>{{card.card_number}}</span></td>
+                                <td scope="row" name="card_id">
+                                    <span>{{card.expiration_mm}}-{{card.expiration_yyyy}}</span>
+                                </td>
+                                <td>
+                                    <input type="hidden" name="card_id" value="{{card.id}}">
+                                    <a href="/my_dashboard/provider_delete_card/{{provider_id}}/{{card.id}}/" class="btn btn-danger">Delete</a>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-2">
+        <a href="/delete_account/">
+            <button class="btn btn-danger">Delete account</button>
+        </a>
+    </div>
+</div>
+    {% endblock %}
